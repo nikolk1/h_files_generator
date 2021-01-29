@@ -82,13 +82,11 @@ pub mod header_constructor {
             for m in re.find_iter(&self.c_content) {
                 let cap = m.as_str();
                 matches.push(String::from(cap));
-                println!("{}", String::from(cap));
                 if remove {
                     _tmp = _tmp.replace(cap, "");
                 }
             }
                 self.c_content = _tmp;
-                println!("here!!");
                 self.h_content.push_str(&matches.join(&sep));
                 self.h_content.push_str(&sep);
                 self.h_content.push_str("\n");
