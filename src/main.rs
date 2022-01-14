@@ -1,12 +1,11 @@
 extern crate clap;
 
+use clap::Parser;
 use header_constructor::header_constructor::HeaderConstructor;
-use clap::Clap;
 
 mod header_constructor;
 
-#[derive(Clap)]
-#[clap(version = "1.0")]
+#[derive(Parser)]
 struct Opts {
     #[clap(short, long)]
     includes: bool,
@@ -19,10 +18,8 @@ struct Opts {
 }
 
 fn main() {
-    // let args: Vec<String> = env::args().collect();
-    // println!("Hello, world!");
     let opts: Opts = Opts::parse();
 
     let mut h = HeaderConstructor::new(&opts.path);
-    h.generate_header(opts.includes, opts.structs, opts.defines);
+    h.generate(opts.includes, opts.structs, opts.defines);
 }
