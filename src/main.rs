@@ -21,5 +21,5 @@ fn main() {
     let opts: Opts = Opts::parse();
 
     let mut h = HeaderConstructor::new(&opts.path);
-    h.generate_header(opts.includes, opts.structs, opts.defines);
+    h.modify_content(opts.includes, opts.structs, opts.defines);
 }

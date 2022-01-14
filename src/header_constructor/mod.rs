@@ -21,6 +21,7 @@ pub mod header_constructor {
     }
 
     impl HeaderConstructor {
+        /// Constructs a new `HeaderConstructor`.
         pub fn new(c_path: &str) -> HeaderConstructor {
             let mut new_header = HeaderConstructor {
                 c_content: String::from(""),
@@ -36,13 +37,17 @@ pub mod header_constructor {
                 fs::read_to_string((*self.c_path).to_str().unwrap()).expect("Something went wrong while reading the file");
         }
 
+        /// Functions that extract content by regex
         fn extract_includes(&mut self, flag: bool) { if flag {self.extract_text_by_regex(&INCLUDE_STATEMENT, "", true)};}
         fn extract_defines(&mut self, flag: bool) {if flag {self.extract_text_by_regex(&DEFINE_STATEMENT, "", true)};}
         fn extract_structs(&mut self, flag: bool) {if flag {self.extract_text_by_regex(&STRUCT, "\n", true)};}
         fn extract_functions_decleration(& mut self) { self.extract_text_by_regex(&FUNCTION_DECLERATION, ";\n", false);}
         
-        pub fn generate_header(&mut self, i: bool, s: bool, d: bool) {
-            let h_path: String = self.generate_h_path();
+
+        /// Create header file
+        pub fn modify_content(&mut self, i: bool, s: bool, d: bool) {
+
+            let h_path: String = self.get_h_path();
             // TODO: add support for linux/windows slashes and consider using Path objects
             
             self.extract_includes(i);
@@ -53,11 +58,11 @@ pub mod header_constructor {
             let header_include = format!("#include \"{}.h\"", self.c_path.file_stem().unwrap().to_str().unwrap());
             self.c_content = format!("{}\n{}", header_include, self.c_content);
             
-            self.create_header_file(&h_path);
+            self.write_to_fs(&h_path);
         }
 
 
-        fn create_header_file(&mut self, path: &str) {
+        fn write_to_fs(&mut self, path: &str) {
             fs::write(*self.c_path.clone(), &self.c_content).unwrap();
             fs::write(path, &self.h_content).unwrap();
         }
@@ -80,7 +85,7 @@ pub mod header_constructor {
             self.h_content.push_str(&content);
         }
 
-        fn generate_h_path(&self) -> String {
+        fn get_h_path(&self) -> String {
             let mut path = self.c_path.clone();
             path.set_extension("h");
             String::from(path.to_str().unwrap())
