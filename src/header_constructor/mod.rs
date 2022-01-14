@@ -44,11 +44,10 @@ pub mod header_constructor {
         fn extract_functions_decleration(& mut self) { self.extract_text_by_regex(&FUNCTION_DECLERATION, ";\n", false);}
         
 
-        /// Create header file
-        pub fn modify_content(&mut self, i: bool, s: bool, d: bool) {
+        /// Generate the .h file content and modify the code in .c
+        pub fn generate(&mut self, i: bool, s: bool, d: bool) {
 
             let h_path: String = self.get_h_path();
-            // TODO: add support for linux/windows slashes and consider using Path objects
             
             self.extract_includes(i);
             self.extract_defines(d);
@@ -61,12 +60,14 @@ pub mod header_constructor {
             self.write_to_fs(&h_path);
         }
 
-
+        /// Write modification to files
         fn write_to_fs(&mut self, path: &str) {
             fs::write(*self.c_path.clone(), &self.c_content).unwrap();
             fs::write(path, &self.h_content).unwrap();
         }
 
+        /// Extract text matching a pattern and join them by some seperator.
+        /// if this text needs to be removed from the .c file so remove flag should be set to true
         fn extract_text_by_regex(&mut self, pattern: &Regex, sep: &str, remove: bool) {
             let re = &pattern;
             let mut matches: Vec<String> = vec![];
@@ -85,6 +86,7 @@ pub mod header_constructor {
             self.h_content.push_str(&content);
         }
 
+        /// assemble a full path for .h file from .c full path
         fn get_h_path(&self) -> String {
             let mut path = self.c_path.clone();
             path.set_extension("h");
