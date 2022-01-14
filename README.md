@@ -71,3 +71,4 @@ int b(int c)
 ## Todo:
 1. option to specify output path
 2. improve strcut regex
+3. add tests
