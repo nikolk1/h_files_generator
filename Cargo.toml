@@ -1,5 +1,5 @@
 [package]
-name = "h_generator"
+name = "hgen"
 version = "1.0.0"
 authors = ["nikolk1 <nikolk202@gmail.com>"]
 edition = "2018"

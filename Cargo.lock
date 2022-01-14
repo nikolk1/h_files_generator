@@ -63,15 +63,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "h_generator"
-version = "1.0.0"
-dependencies = [
- "clap",
- "lazy_static",
- "regex",
-]
-
-[[package]]
 name = "hashbrown"
 version = "0.11.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -90,6 +81,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "322f4de77956e22ed0e5032c359a0f1273f1f7f0d79bfa3b8ffbc730d7fbcc5c"
 dependencies = [
  "libc",
+]
+
+[[package]]
+name = "hgen"
+version = "1.0.0"
+dependencies = [
+ "clap",
+ "lazy_static",
+ "regex",
 ]
 
 [[package]]
