@@ -11,7 +11,7 @@ pub mod header_constructor {
         .unwrap();
         static ref INCLUDE_STATEMENT: Regex = Regex::new(r"(?m)(^#include <.*>$\n)").unwrap();
         static ref DEFINE_STATEMENT: Regex = Regex::new(r"(?m)(^#define .* .*$\n)").unwrap();
-        static ref STRUCT: Regex = Regex::new(r"(?m)(^struct .*[\s|\n]{1}\{\n?\s?.*\s?\})").unwrap();
+        static ref STRUCT: Regex = Regex::new(r"(?m)(^struct .*[\s|\n]{1}\{\n?(?:\s+.*\s?;\n?)*\};\n?)").unwrap();
     }
 
     pub struct HeaderConstructor {
@@ -55,7 +55,7 @@ pub mod header_constructor {
             self.extract_functions_decleration();
             
             let header_include = format!("#include \"{}.h\"", self.c_path.file_stem().unwrap().to_str().unwrap());
-            self.c_content = format!("{}\n{}", header_include, self.c_content);
+            self.c_content = format!("{}{}", header_include, self.c_content);
             
             self.write_to_fs(&h_path);
         }
